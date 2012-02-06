@@ -1,19 +1,22 @@
 package pim.model;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import pim.util.ISerializationStrategy;
 
 public class Pim
 {
   private AddressBook addressBook;
+  private ISerializationStrategy serializer;
 
   public Pim()
   {
+    serializer = null;
     newPim();
+  }
+
+  public Pim(ISerializationStrategy serializer)
+  {
+    this.serializer = serializer;
+    newPim(); 
   }
 
   public AddressBook getAddressBook()
@@ -28,39 +31,11 @@ public class Pim
 
   public void open(String filename) throws Exception
   {
-    ObjectInputStream is = null;
-
-    try
-    {
-      XStream xstream = new XStream(new DomDriver());
-      is = xstream.createObjectInputStream(new FileReader(filename));
-      addressBook = (AddressBook) is.readObject();
-    }
-    finally
-    {
-      if (is != null)
-      {
-        is.close();
-      }
-    }
+    addressBook = (AddressBook) serializer.read(filename);
   }
 
   public void save(String filename) throws Exception
   {
-    ObjectOutputStream os = null;
-
-    try
-    {
-      XStream xstream = new XStream(new DomDriver());
-      os = xstream.createObjectOutputStream(new FileWriter(filename));
-      os.writeObject(addressBook);
-    }
-    finally
-    {
-      if (os != null)
-      {
-        os.close();
-      }
-    }
+    serializer.write(filename, addressBook);
   }
 }

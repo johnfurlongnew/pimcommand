@@ -28,5 +28,11 @@ public class NewCommand implements Command
   {
     doCommand();
   }
-
+  
+  public Command copy()
+  {
+    NewCommand command = new NewCommand(pim);
+    command.addressBook = addressBook;
+    return command;
+  }
 }

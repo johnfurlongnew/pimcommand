@@ -15,13 +15,13 @@ public class ClearCommand implements Command
     this.pim = pim;
     this.console = console;
   }
- 
+
   public void doCommand()
   {
     addressBook = pim.getAddressBook();
     pim.setAddressBook(new AddressBook());
   }
-  
+
   public void undoCommand()
   {
     pim.setAddressBook(addressBook);
@@ -30,5 +30,12 @@ public class ClearCommand implements Command
   public void redoCommand()
   {
     doCommand();
+  }
+
+  public Command copy()
+  {
+    ClearCommand command = new ClearCommand(pim, console);
+    command.addressBook = addressBook;
+    return command;
   }
 }

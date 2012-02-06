@@ -30,4 +30,9 @@ public class UndoCommand implements Command
   public void redoCommand()
   {
   }
+
+  public Command copy()
+  {
+    return null;
+  }
 }

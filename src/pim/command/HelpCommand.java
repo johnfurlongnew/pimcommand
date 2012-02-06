@@ -30,4 +30,9 @@ public class HelpCommand implements Command
   {
     console.putln(commandNames);
   }
+  
+  public Command copy()
+  {
+    return new HelpCommand(commandNames, console);
+  }
 }

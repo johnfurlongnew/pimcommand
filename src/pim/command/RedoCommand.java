@@ -12,7 +12,7 @@ public class RedoCommand implements Command
     this.undoBuffer = undoBuffer;
     this.redoBuffer = redoBuffer;
   }
-
+ 
   public void doCommand()
   {
     if (redoBuffer.size() > 0)
@@ -29,5 +29,10 @@ public class RedoCommand implements Command
 
   public void redoCommand()
   {
+  }
+
+  public Command copy()
+  {
+    return null;
   }
 }

@@ -28,7 +28,8 @@ public class DeleteCommand implements Command
       }
     }
   }
-   public void undoCommand()
+
+  public void undoCommand()
   {
     pim.getAddressBook().addContact(contact);
   }
@@ -36,5 +37,12 @@ public class DeleteCommand implements Command
   public void redoCommand()
   {
     pim.getAddressBook().deleteContact(contact);
+  }
+
+  public Command copy()
+  {
+    DeleteCommand command = new DeleteCommand(pim, console);
+    command.contact = contact;
+    return command;
   }
 }

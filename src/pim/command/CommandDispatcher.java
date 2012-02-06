@@ -38,14 +38,10 @@ public class CommandDispatcher
       command.doCommand();
       commandDispatched = true;
 
-      if ((command instanceof AddCommand)    ||
-          (command instanceof DeleteCommand) ||
-          (command instanceof ClearCommand)  ||
-          (command instanceof NewCommand)    ||
-          (command instanceof OpenCommand)   ||
-          (command instanceof SaveCommand))
+      Command copy = command.copy();
+      if (copy != null)
       {
-        undoBuffer.push(command);
+        undoBuffer.push(copy);
       }
     }
     return commandDispatched;

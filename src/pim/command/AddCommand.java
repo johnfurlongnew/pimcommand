@@ -4,7 +4,7 @@ import pim.model.Contact;
 import pim.util.Console;
 import pim.model.Pim;
 
-public class AddCommand implements Command
+public class AddCommand implements Command, Cloneable
 {
   private Pim pim;
   private Console console;
@@ -43,5 +43,12 @@ public class AddCommand implements Command
   public void redoCommand()
   {
     pim.getAddressBook().addContact(contact);
+  }
+
+  public Command copy()
+  {
+    AddCommand command = new AddCommand(pim, console);
+    command.contact = contact;
+    return command;
   }
 }

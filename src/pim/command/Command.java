@@ -7,4 +7,7 @@ public interface Command
   void undoCommand();
 
   void redoCommand();
+  
+  Command copy();
 }
+ 

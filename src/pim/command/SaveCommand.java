@@ -46,4 +46,9 @@ public class SaveCommand implements Command
       console.putln("Error saving file");
     }
   }
+
+  public Command copy()
+  {
+    return null;
+  }
 }

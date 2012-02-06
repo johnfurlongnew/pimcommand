@@ -18,12 +18,17 @@ public class ListCommand implements Command
   {
     console.putln(pim.getAddressBook());
   }
-    
+
   public void undoCommand()
   {
   }
 
   public void redoCommand()
   {
+  }
+
+  public Command copy()
+  {
+    return null;
   }
 }

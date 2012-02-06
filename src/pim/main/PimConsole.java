@@ -1,18 +1,29 @@
 package pim.main;
 
-import pim.model.Contact;
+import pim.command.AddCommand;
+import pim.command.ClearCommand;
+import pim.command.CommandDispatcher;
+import pim.command.DeleteCommand;
+import pim.command.ListCommand;
+import pim.command.NewCommand;
+import pim.command.OpenCommand;
+import pim.command.SaveCommand;
+
 import pim.model.Pim;
 import pim.util.Console;
-
+ 
 public class PimConsole
 {
   private Pim pim;
   private Console console;
+  private CommandDispatcher commandDispatcher;
 
   public PimConsole(Pim pim, Console console)
   {
-    this.console = console;
     this.pim = pim;
+    this.console = console;
+    this.commandDispatcher = new CommandDispatcher(console);
+    loadCommands();
   }
 
   public void run()
@@ -20,123 +31,31 @@ public class PimConsole
     console.putln("Address Book.");
     console.putln("Type 'help' for a list of commands.");
 
-    String command;
-
+    String commandName;
     do
     {
-      System.out.print(">");
-      command = console.getNext();
-
-      if (command.equals("open"))
+      console.put(">");
+      commandName = console.getNext();
+      if (!commandDispatcher.dispatchCommand(commandName))
       {
-        open();
-      }
-      else if (command.equals("save"))
-      {
-        save();
-      }
-      else if (command.equals("add"))
-      {
-        add();
-      }
-      else if (command.equals("delete"))
-      {
-        delete();
-      }
-      else if (command.equals("list"))
-      {
-        list();
-      }
-      else if (command.equals("clear"))
-      {
-        clear();
-      }
-      else if (command.equals("help"))
-      {
-        help();
-      }
-      else
-      {
-        if (!command.equals("bye"))
+        if (!commandName.equals("bye"))
         {
           console.putln("unknown command");
         }
       }
     }
-    while (!(command.equals("bye")));
-
-    console.putln("Goodbye.");
+    while (!(commandName.equals("bye")));
+    System.out.println("Goodbye.");
   }
 
-  private void open()
+  private void loadCommands()
   {
-    if (console.hasCommands("filename"))
-    {
-
-      String fileName = console.getNext();
-
-      try
-      {
-        pim.open(fileName);
-      }
-      catch (Exception e)
-      {
-        console.putln("Error opening file");
-      }
-    }
-  }
-
-  private void save()
-  {
-    if (console.hasCommands("filename"))
-    {
-      String fileName = console.getNext();
-
-      try
-      {
-        pim.save(fileName);
-      }
-      catch (Exception e)
-      {
-        console.putln("Error saving file");
-      }
-    }
-  }
-
-  private void add()
-  {
-    if (console.hasCommands("firstname lastname email"))
-    {
-      String firstName = console.getNext();
-      String lastName = console.getNext();
-      String email = console.getNext();
-
-      pim.getAddressBook().addContact(new Contact(firstName, lastName, email));
-    }
-  }
-
-  private void delete()
-  {
-    if (console.hasCommands("email"))
-    {
-      String email = console.getNext();
-      Contact contact = pim.getAddressBook().getContact(email);
-      pim.getAddressBook().deleteContact(contact);
-    }
-  }
-
-  private void list()
-  {
-    console.put(pim.getAddressBook().toString());
-  }
-
-  private void clear()
-  {
-    pim.getAddressBook().clear();
-  }
-
-  private void help()
-  {
-    console.putln("open, save, add, delete, list, clear, help, bye");
+    commandDispatcher.addCommand("new", new NewCommand(pim));
+    commandDispatcher.addCommand("open", new OpenCommand(pim, console));
+    commandDispatcher.addCommand("save", new SaveCommand(pim, console));
+    commandDispatcher.addCommand("add", new AddCommand(pim, console));
+    commandDispatcher.addCommand("list", new ListCommand(pim, console));
+    commandDispatcher.addCommand("delete", new DeleteCommand(pim, console));
+    commandDispatcher.addCommand("clear", new ClearCommand(pim, console));
   }
 }

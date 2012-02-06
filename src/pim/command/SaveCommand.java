@@ -7,6 +7,7 @@ public class SaveCommand implements Command
 {
   private Pim pim;
   private Console console;
+  private String fileName;
 
   public SaveCommand(Pim pim, Console console)
   {
@@ -18,7 +19,7 @@ public class SaveCommand implements Command
   {
     if (console.hasCommands("filename"))
     {
-      String fileName = console.getNext();
+      fileName = console.getNext();
       try
       {
         pim.save(fileName);
@@ -27,6 +28,22 @@ public class SaveCommand implements Command
       {
         console.putln("Error saving file");
       }
+    }
+  }
+
+  public void undoCommand()
+  {
+  }
+
+  public void redoCommand()
+  {
+    try
+    {
+      pim.save(fileName);
+    }
+    catch (Exception e)
+    {
+      console.putln("Error saving file");
     }
   }
 }

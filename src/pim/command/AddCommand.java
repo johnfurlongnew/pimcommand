@@ -8,6 +8,7 @@ public class AddCommand implements Command
 {
   private Pim pim;
   private Console console;
+  private Contact contact;
 
   public AddCommand(Pim pim, Console console)
   {
@@ -24,7 +25,7 @@ public class AddCommand implements Command
       String email = console.getNext();
       if (pim.getAddressBook().getContact(email) == null)
       {
-        Contact contact = new Contact(firstName, lastName, email);
+        contact = new Contact(firstName, lastName, email);
         pim.getAddressBook().addContact(contact);
       }
       else
@@ -32,5 +33,15 @@ public class AddCommand implements Command
         console.putln("Contact with that email already exists.");
       }
     }
+  }
+
+  public void undoCommand()
+  {
+    pim.getAddressBook().deleteContact(contact);
+  }
+
+  public void redoCommand()
+  {
+    pim.getAddressBook().addContact(contact);
   }
 }

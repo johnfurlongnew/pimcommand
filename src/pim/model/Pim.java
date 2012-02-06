@@ -16,8 +16,8 @@ public class Pim
   public Pim(ISerializationStrategy serializer)
   {
     this.serializer = serializer;
-    newPim(); 
-  }
+    newPim();
+  } 
 
   public AddressBook getAddressBook()
   {
@@ -37,5 +37,10 @@ public class Pim
   public void save(String filename) throws Exception
   {
     serializer.write(filename, addressBook);
+  }
+
+  public void setAddressBook(AddressBook addressBook)
+  {
+    this.addressBook = addressBook;
   }
 }

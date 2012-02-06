@@ -5,7 +5,7 @@ import pim.util.Console;
 
 public class OpenCommand implements Command
 {
-  private Pim     pim;
+  private Pim pim;
   private Console console;
 
   public OpenCommand(Pim pim, Console console)
@@ -28,5 +28,13 @@ public class OpenCommand implements Command
         console.putln("Error opening file");
       }
     }
+  }
+
+  public void undoCommand()
+  {
+  }
+
+  public void redoCommand()
+  {
   }
 }

@@ -8,6 +8,7 @@ public class DeleteCommand implements Command
 {
   private Pim pim;
   private Console console;
+  private Contact contact;
 
   public DeleteCommand(Pim pim, Console console)
   {
@@ -20,11 +21,20 @@ public class DeleteCommand implements Command
     if (console.hasCommands("lastname"))
     {
       String email = console.getNext();
-      Contact contact = pim.getAddressBook().getContact(email);
+      contact = pim.getAddressBook().getContact(email);
       if (contact != null)
       {
         pim.getAddressBook().deleteContact(contact);
       }
     }
+  }
+   public void undoCommand()
+  {
+    pim.getAddressBook().addContact(contact);
+  }
+
+  public void redoCommand()
+  {
+    pim.getAddressBook().deleteContact(contact);
   }
 }
